@@ -11,6 +11,8 @@ Plug 'lepture/vim-velocity'
 " Plug 'kevinw/pyflakes-vim'
 Plug 'vim-syntastic/syntastic'
 Plug 'Shougo/neocomplete.vim'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'mxw/vim-jsx'
 call plug#end()
 filetype on                 " required
 filetype plugin indent on    " required
@@ -60,6 +62,11 @@ let g:syntastic_javascript_checkers = ['eslint']
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype python setlocal ts=4 expandtab sts=4 sw=4
 autocmd Filetype javascript setlocal ts=2 sw=2
+autocmd BufRead,BufNewFile *.jsx setlocal ts=2 sw=2 sts=2 expandtab
+"autocmd Filetype *.jsx setlocal ts=2 sw=2 expandtab
+autocmd Filetype velocity setlocal ts=2 sw=2 expandtab sts=2 sw=2
+autocmd Filetype yaml setlocal ts=2 sw=2 expandtab sts=2 sw=2
+autocmd BufRead,BufNewFile *.css setlocal ts=2 sw=2 sts=2 expandtab
 
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 " Enable neocomplete
@@ -74,4 +81,8 @@ inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 autocmd Filetype python map <F5> :!python3 % 
 
 " set flake settings
-autocmd BufWritePost *.py call Flake8()
+" autocmd BufWritePost *.py call Flake8()
+autocmd BufWritePost *.py call flake8()
+
+" set indentation lines
+let g:indent_guides_start_level = 1
