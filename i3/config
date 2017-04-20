@@ -11,15 +11,19 @@ exec xinput --set-prop "TPPS/2 IBM TrackPoint" "Device Accel Constant Decelerati
 # To get a config file with the same key positions, but for your current
 # layout, use the i3-config-wizard
 #
+# Set font to better looking one
+# font xft:Droid Sans Mono 12
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 12
+# font pango:monospace 12
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 font pango:DejaVu Sans Mono 12
 
+# Reset dpi
+exec xrandr --dpi 140
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # The font above is very space-efficient, that is, it looks good, sharp and
@@ -30,8 +34,6 @@ font pango:DejaVu Sans Mono 12
 #font pango:DejaVu Sans Mono 10
 #font pango:DejaVu Sans Mono, Terminus Bold Semi-Condensed 11
 #font pango:Terminus 11px
-
-exec xrandr --dpi 140
 
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
@@ -215,3 +217,9 @@ mode "moveit" {
 bindsym $mod+m focus floating; mode "moveit"
 # compton
 exec --no-startup-id compton -cCGb --backend glx --vsync opengl
+
+# set screen settings to default
+# exec xrandr --output HDMI-1-3 --off --output HDMI-1-2 --off --output HDMI-1-1 --off --output eDP-1-1 --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1-3 --off --output DP-1-2 --off --output DP-1-1 --off
+# Set background
+exec feh --bg-scale ~/bground.jpg
+
