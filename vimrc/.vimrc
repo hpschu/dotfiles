@@ -9,6 +9,7 @@ Plug 'lepture/vim-velocity'
 " Plug 'pangloss/vim-javascript'
 " Plug 'davidhalter/jedi-vim'
 " Plug 'kevinw/pyflakes-vim'
+Plug 'mtscout6/syntastic-local-eslint.vim'
 Plug 'vim-syntastic/syntastic'
 Plug 'Shougo/neocomplete.vim'
 Plug 'nathanaelkane/vim-indent-guides'
@@ -48,7 +49,6 @@ set clipboard=unnamed
 let g:syntastic_mode_map = { 'mode': 'active',
                             \ 'active_filetypes': ['python', 'javascript'],
                             \ 'passive_filetypes': [] }
-
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -61,7 +61,7 @@ let g:syntastic_javascript_checkers = ['eslint']
 " Tab width
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype python setlocal ts=4 expandtab sts=4 sw=4
-autocmd Filetype javascript setlocal ts=2 sw=2
+autocmd Filetype javascript setlocal ts=2 sw=2 sts=2 expandtab
 autocmd BufRead,BufNewFile *.jsx setlocal ts=2 sw=2 sts=2 expandtab
 "autocmd Filetype *.jsx setlocal ts=2 sw=2 expandtab
 autocmd Filetype velocity setlocal ts=2 sw=2 expandtab sts=2 sw=2
