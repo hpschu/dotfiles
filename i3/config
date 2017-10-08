@@ -1,6 +1,12 @@
-exec synclient TouchpadOff=1
-exec xset m 3 6
-exec xinput --set-prop "TPPS/2 IBM TrackPoint" "Device Accel Constant Deceleration" 0.4
+# exec synclient TouchpadOff=1
+# exec xinput set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
+# exec xset m 3 20
+# exec xinput set-prop "TPPS/2 IBM TrackPoint" "libinput Accel Speed" 1
+# Trackpad tapping
+# exec xinput --set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1
+# Trackpad disable when typing
+exec xinput --set-prop "TPPS/2 IBM TrackPoint" "libinput Disable While Typing Enabled" 0
+
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
@@ -20,20 +26,21 @@ exec xinput --set-prop "TPPS/2 IBM TrackPoint" "Device Accel Constant Decelerati
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:DejaVu Sans Mono 12
+# font pango:DejaVu Sans Mono 12
 
 # Reset dpi
-exec xrandr --dpi 140
+# exec xrandr --dpi 140
+exec xrandr --dpi 230
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # The font above is very space-efficient, that is, it looks good, sharp and
 # clear in small sizes. However, its unicode glyph coverage is limited, the old
 # X core fonts rendering does not support right-to-left and this being a bitmap
 # font, it doesn’t scale on retina/hidpi displays.
-#font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-#font pango:DejaVu Sans Mono 10
-#font pango:DejaVu Sans Mono, Terminus Bold Semi-Condensed 11
-#font pango:Terminus 11px
+# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+font pango:DejaVu Sans Mono 14
+font pango:DejaVu Sans Mono, Terminus Bold Semi-Condensed 17
+font pango:Terminus 15px
 
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
@@ -67,10 +74,10 @@ bindsym XF86MonBrightnessUp exec sudo blight.py +5%
 bindsym XF86MonBrightnessDown exec sudo blight.py -5%
 
 # change focus
-bindsym $mod+$left focus left
-bindsym $mod+$down focus down
-bindsym $mod+$up focus up
-bindsym $mod+$right focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -91,7 +98,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+Shift+h split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -199,11 +206,12 @@ bar {
 exec i3-config-wizard
 
 # Pulse Audio controls
-#bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+ #increase sound volume
-#bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%- #decrease sound volume
-#bindsym XF86AudioMute exec amixer set Master mute # mute sound
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
-# Sreen brightness controls
+# Screen brightness controls
 #bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 #bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
@@ -217,9 +225,13 @@ mode "moveit" {
 bindsym $mod+m focus floating; mode "moveit"
 # compton
 exec --no-startup-id compton -cCGb --backend glx --vsync opengl
+# lock screen
+bindsym $mod+ctrl+l exec i3lock -c 000000 default -n
 
 # set screen settings to default
 # exec xrandr --output HDMI-1-3 --off --output HDMI-1-2 --off --output HDMI-1-1 --off --output eDP-1-1 --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1-3 --off --output DP-1-2 --off --output DP-1-1 --off
 # Set background
-exec feh --bg-scale ~/bground.jpg
-
+exec feh --bg-scale /usr/share/backgrounds/bground.jpg
+# exec --no-startup-id nitrogen --restore
+# exec screen_default.sh
+exec --no-startup-id nm-applet
