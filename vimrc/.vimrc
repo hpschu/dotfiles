@@ -6,8 +6,8 @@ Plug 'vimwiki/vimwiki'
 Plug 'pangloss/vim-javascript'
 Plug 'nvie/vim-flake8'
 Plug 'lepture/vim-velocity'
-Plug 'mtscout6/syntastic-local-eslint.vim'
 Plug 'vim-syntastic/syntastic'
+Plug 'mtscout6/syntastic-local-eslint.vim'
 Plug 'Shougo/neocomplete.vim'
 Plug 'mxw/vim-jsx'
 " Plug 'Quramy/vim-js-pretty-template'
@@ -15,6 +15,7 @@ Plug 'mxw/vim-jsx'
 " Plug 'xolox/vim-misc'
 Plug 'Yggdroot/indentLine'
 Plug 'tmux-plugins/tmux-yank'
+Plug 'scrooloose/nerdtree'
 call plug#end()
 filetype on                 " required
 filetype plugin indent on    " required
@@ -54,12 +55,12 @@ let g:javascript_plugin_jsdoc = 1
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
 let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['javascript', 'jsx'],'passive_filetypes': [] }
 nnoremap <C-w>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
 
 " Tab width
@@ -90,3 +91,32 @@ autocmd BufWritePost *.py call flake8()
 
 " set indentation lines
 let g:indent_guides_start_level = 1
+
+" NERDtree settings
+map <C-n> :NERDTreeToggle<CR>
+
+" Syntastic local linter support
+
+let g:syntastic_javascript_checkers = []
+
+function CheckJavaScriptLinter(filepath, linter)
+	if exists('b:syntastic_checkers')
+		return
+	endif
+	if filereadable(a:filepath)
+		let b:syntastic_checkers = [a:linter]
+		let {'b:syntastic_' . a:linter . '_exec'} = a:filepath
+	endif
+endfunction
+
+function SetupJavaScriptLinter()
+	let l:current_folder = expand('%:p:h')
+	let l:bin_folder = fnamemodify(syntastic#util#findFileInParent('package.json', l:current_folder), ':h')
+	let l:bin_folder = l:bin_folder . '/node_modules/.bin/'
+	call CheckJavaScriptLinter(l:bin_folder . 'standard', 'standard')
+	call CheckJavaScriptLinter(l:bin_folder . 'eslint', 'eslint')
+endfunction
+
+autocmd FileType javascript call SetupJavaScriptLinter()
+vnoremap <leader>p "_dP
+au BufNewFile,BufRead *.vm set ft=velocity
